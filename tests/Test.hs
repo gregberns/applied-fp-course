@@ -36,24 +36,46 @@ import           Test.Tasty.Wai     (assertBody, assertStatus', get, post,
 -- 'tasty-hunit' package. More information is available on the Hackage page:
 -- https://hackage.haskell.org/package/tasty-hunit.
 --
--- import qualified Test.Tasty.HUnit as HU
+import            Test.Tasty.HUnit
 --
 
 import           Network.HTTP.Types as HTTP
 
+import           Level04.Types        (Comment(..), encodeComment)
+
 -- | This import is provided for you so you can check your work from Level02. As
 -- you move forward, come back and import your latest 'Application' so that you
 -- can test your work as you progress.
-import qualified Level02.Core       as Core
+import qualified Level04.Core       as Core
 
 main :: IO ()
 main = defaultMain $ testGroup "Applied FP Course - Tests"
 
-  [ testWai Core.app "List Topics" $
-      get "fudge/view" >>= assertStatus' HTTP.status200
+  [ 
+--     testWai Core.app "List Topics" $
+--       get "fudge/view" >>= assertStatus' HTTP.status200
 
-  , testWai Core.app "Empty Input" $ do
-      resp <- post "fudge/add" ""
-      assertStatus' HTTP.status400 resp
-      assertBody "Empty Comment Text" resp
+--   , testWai Core.app "Empty Input" $ do
+--       resp <- post "fudge/add" ""
+--       assertStatus' HTTP.status400 resp
+--       assertBody "Empty Comment Text" resp
+
+    testCase "Example test case" $ do
+      -- assertion no. 1 (passes)
+      2 + 2 @?= 4
+      -- assertion no. 2 (fails)
+      -- assertBool "the list is not empty" $ null [1]
+      -- assertion no. 3 (would have failed, but won't be executed because
+      -- the previous assertion has already failed)
+      "foo" @?= "bar"
+
+      encodeComment 
+        (Comment 
+          (CommentId 123) 
+          (CommentTopic "butter") 
+          (CommentBody "Yellow")
+          UTCTime ((parseTimeOrError True defaultTimeLocale "%H:%M:%S") "10:30:20" :: UTCTime)
+          ) 
+        @?= 
+
   ]
