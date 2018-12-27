@@ -32,7 +32,7 @@ import           Database.SQLite.SimpleErrors.Types (SQLiteResponse)
 import           Waargonaut.Encode                  (Encoder')
 import qualified Waargonaut.Encode                  as E
 
-import           Level04.Conf                       (Conf, firstAppConfig)
+import           Level04.Conf                       (Conf(..), firstAppConfig)
 import qualified Level04.DB                         as DB
 import           Level04.Types                      (ContentType (JSON, PlainText),
                                                      Error (EmptyCommentText, EmptyTopic, UnknownRoute),
@@ -48,7 +48,12 @@ data StartUpError
   deriving Show
 
 runApp :: IO ()
-runApp = error "runApp needs re-implementing"
+runApp = do
+  eitherdb <- prepareAppReqs
+  either
+    print  --error
+    (\db -> run 3000 $ app db)
+    eitherdb
 
 -- We need to complete the following steps to prepare our app requirements:
 --
@@ -59,9 +64,13 @@ runApp = error "runApp needs re-implementing"
 --
 prepareAppReqs
   :: IO ( Either StartUpError DB.FirstAppDB )
-prepareAppReqs =
-  error "prepareAppReqs not implemented"
-
+prepareAppReqs = do
+  eith <- DB.initDB $ dbFilePath firstAppConfig
+  pure $ either
+    (\e -> Left $ DBInitErr e)
+    Right
+    eith
+  
 -- | Some helper functions to make our lives a little more DRY.
 mkResponse
   :: Status

@@ -106,14 +106,13 @@ encodeComment =
 fromDBComment
   :: DBComment
   -> Either Error Comment
-fromDBComment =
-  error "fromDBComment not yet implemented"
-  -- E.mapLikeObj $ (\c -> 
-  --   E.intAt  "CommentId"  (_dbCommentId c) .
-  --   E.textAt "CommentTopic"  (_dbCommentTopic c) .
-  --   E.textAt "CommentBody"  (_dbCommentBody c) .
-  --   E.textAt "CommentTime"  (encodeISO8601DateTime $ _dbCommentTime c)
-  --   )
+fromDBComment c = do
+  let
+    id'   =  CommentId $ _dbCommentId c
+    time = _dbCommentTime c
+  topic <- mkTopic $ _dbCommentTopic c
+  comment <- mkCommentText $ _dbCommentBody c
+  Right $ Comment id' topic comment time
 
 data RqType
   = AddRq Topic CommentText

@@ -41,7 +41,9 @@ import            Test.Tasty.HUnit
 
 import           Network.HTTP.Types as HTTP
 
-import           Level04.Types        (Comment(..), encodeComment)
+-- import           Data.Time            (UTCTime(..), parseTimeOrError, defaultTimeLocale)
+-- import           Level04.Types        (Comment(..), encodeComment)
+import              Level04.DB           (FirstAppDB)
 
 -- | This import is provided for you so you can check your work from Level02. As
 -- you move forward, come back and import your latest 'Application' so that you
@@ -52,30 +54,33 @@ main :: IO ()
 main = defaultMain $ testGroup "Applied FP Course - Tests"
 
   [ 
---     testWai Core.app "List Topics" $
---       get "fudge/view" >>= assertStatus' HTTP.status200
+    -- testWai Core.app "List Topics" $
+    --   get "fudge/view" >>= assertStatus' HTTP.status200
 
---   , testWai Core.app "Empty Input" $ do
---       resp <- post "fudge/add" ""
---       assertStatus' HTTP.status400 resp
---       assertBody "Empty Comment Text" resp
+  -- , 
+    -- testWai Core.app "Empty Input" $ do
+    --   resp <- post "fudge/add" ""
+    --   assertStatus' HTTP.status400 resp
+    --   assertBody "Empty Comment Text" resp
 
-    testCase "Example test case" $ do
-      -- assertion no. 1 (passes)
-      2 + 2 @?= 4
-      -- assertion no. 2 (fails)
-      -- assertBool "the list is not empty" $ null [1]
-      -- assertion no. 3 (would have failed, but won't be executed because
-      -- the previous assertion has already failed)
-      "foo" @?= "bar"
 
-      encodeComment 
-        (Comment 
-          (CommentId 123) 
-          (CommentTopic "butter") 
-          (CommentBody "Yellow")
-          UTCTime ((parseTimeOrError True defaultTimeLocale "%H:%M:%S") "10:30:20" :: UTCTime)
-          ) 
-        @?= 
+
+    -- testCase "Example test case" $ do
+    --   -- assertion no. 1 (passes)
+    --   2 + 2 @?= 4
+    --   -- assertion no. 2 (fails)
+    --   -- assertBool "the list is not empty" $ null [1]
+    --   -- assertion no. 3 (would have failed, but won't be executed because
+    --   -- the previous assertion has already failed)
+    --   "foo" @?= "bar"
+
+      -- runPureEncoder $ encodeComment 
+      --   (Comment 
+      --     (commentId 123) 
+      --     (commentTopic "butter") 
+      --     (commentBody "Yellow")
+      --     commentTime $ UTCTime ((parseTimeOrError True defaultTimeLocale "%H:%M:%S") "10:30:20" :: UTCTime)
+      --     ) 
+      --   @?= ""
 
   ]

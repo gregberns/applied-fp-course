@@ -154,6 +154,9 @@ test-suite app-fp-tests
                      , semigroups == 0.18.*
                      , transformers >= 0.4 && < 0.6
 
+                     -- gb added
+                     , time >= 1.4 && < 1.10
+
                      -- [Challenge] Packages
                      , hedgehog >= 0.6 && < 0.7
                      , tasty-hedgehog >= 0.2 && < 0.3
